@@ -34,56 +34,29 @@ func listEq(l1 *ListNode, l2 *ListNode) bool {
     return l1 == nil && l2 == nil
 }
 
-func toSlice(l *ListNode) []int {
-    var nums []int
-
-    for l != nil {
-        nums = append(nums, l.Val)
-        l = l.Next
+func testerIter(l []int, r []int, exp []int, t *testing.T) {
+    res := addTwoNumbers(fromSlice(l), fromSlice(r))
+    if !listEq(res, fromSlice(exp)) {
+        t.Error("expected", exp, "got", res)
     }
+}
 
-    return nums
+func testerRec(l []int, r []int, exp []int, t *testing.T) {
+    res := addTwoNumbers2(fromSlice(l), fromSlice(r))
+    if !listEq(res, fromSlice(exp)) {
+        t.Error("expected", exp, "got", res)
+    }
 }
 
 func TestAddTwoNumbers1(t *testing.T) {
-    l1 := fromSlice([]int{2, 4, 3})
-    l2 := fromSlice([]int{5, 6, 4})
-    l3 := addTwoNumbers(l1, l2)
+    testerIter([]int{2, 4, 3}, []int{5, 6, 4}, []int{7, 0, 8}, t)
+    testerIter([]int{0}, []int{0}, []int{0}, t)
+    testerIter([]int{9, 9, 9, 9, 9, 9, 9}, []int{9, 9, 9, 9}, []int{8, 9, 9, 9, 0, 0, 0, 1}, t)
+    testerIter([]int{9, 9, 9, 9}, []int{9, 9, 9, 9, 9, 9, 9}, []int{8, 9, 9, 9, 0, 0, 0, 1}, t)
 
-    if !listEq(l3, fromSlice([]int{7, 0, 8})) {
-        t.Error("got ", toSlice(l3), " expected ", []int{7, 0, 8})
-    } else {
-        t.Log("1. Success")
-    }
+    testerRec([]int{2, 4, 3}, []int{5, 6, 4}, []int{7, 0, 8}, t)
+    testerRec([]int{0}, []int{0}, []int{0}, t)
+    testerRec([]int{9, 9, 9, 9, 9, 9, 9}, []int{9, 9, 9, 9}, []int{8, 9, 9, 9, 0, 0, 0, 1}, t)
+    testerRec([]int{9, 9, 9, 9}, []int{9, 9, 9, 9, 9, 9, 9}, []int{8, 9, 9, 9, 0, 0, 0, 1}, t)
 }
 
-func TestAddTwoNumbers2(t *testing.T) {
-    l1 := fromSlice([]int{0})
-    l2 := fromSlice([]int{0})
-    l3 := addTwoNumbers(l1, l2)
-
-    if !listEq(l3, fromSlice([]int{0})) {
-        t.Error("got ", toSlice(l3), " expected ", []int{0})
-    } else {
-        t.Log("2. Success")
-    }
-}
-
-func TestAddTwoNumbers3(t *testing.T) {
-    l1 := fromSlice([]int{9, 9, 9, 9, 9, 9, 9})
-    l2 := fromSlice([]int{9, 9, 9, 9})
-    l3 := addTwoNumbers(l1, l2)
-    l4 := addTwoNumbers(l2, l1)
-
-    if !listEq(l3, fromSlice([]int{8, 9, 9, 9, 0, 0, 0, 1})) {
-        t.Error("got ", toSlice(l3), " expected ", []int{8, 9, 9, 9, 0, 0, 0, 1})
-    } else {
-        t.Log("3. Success")
-    }
-
-    if !listEq(l4, fromSlice([]int{8, 9, 9, 9, 0, 0, 0, 1})) {
-        t.Error("got ", toSlice(l4), " expected ", []int{8, 9, 9, 9, 0, 0, 0, 1})
-    } else {
-        t.Log("4. Success")
-    }
-}
